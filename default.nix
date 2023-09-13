@@ -48,6 +48,32 @@ let
     };
   };
 
+  tmux-thumbs-src = pkgs.fetchFromGitHub {
+    owner = "fcsonline";
+    repo = "tmux-thumbs";
+    rev = "ae91d5f7c0d989933e86409833c46a1eca521b6a";
+    sha256 = "sha256-uZ3URZuHYqPjhikT4XRsRhD7U+lVAyu+gMO/9ITNbc4=";
+  };
+  tmux-thumbs-rust = pkgs.rustPlatform.buildRustPackage rec {
+    pname = "tmux-thumbs";
+    version = src.rev;
+    src = tmux-thumbs-src;
+    cargoHash = "sha256-fc5W6rqho3lBUwIYhZGVFaQXQxED5hqFryIAdTtzg2Q=";
+  };
+
+  tmux-thumbs = pkgs.tmuxPlugins.mkTmuxPlugin rec {
+    pluginName = "tmux-thumbs";
+    rtpFilePath = "tmux-thumbs.tmux";
+    version = src.rev;
+    src = tmux-thumbs-src;
+    buildPhase = ''
+      dst_dir=$out/share/tmux-plugins/${pluginName}/target/release
+      mkdir -p $dst_dir
+      cp ${tmux-thumbs-rust}/bin/thumbs $dst_dir
+      cp ${tmux-thumbs-rust}/bin/tmux-thumbs $dst_dir
+    '';
+  };
+
   tmux = (plugins:
     pkgs.stdenv.mkDerivation rec {
 
@@ -55,7 +81,7 @@ let
       name = "tmux";
       srcs = ./.;
       nativeBuildInputs = with pkgs; [ makeWrapper ];
-      buildInputs = [ pkgs.tmux ];
+      buildInputs = [ pkgs.tmux tmux-thumbs-rust ];
 
       buildPhase = ''
         set -x
@@ -74,4 +100,4 @@ let
       '';
     });
 
-in tmux ([ sidebar vim-tmux-navigator tmux-gruvbox tmux-yank ])
+in tmux ([ sidebar vim-tmux-navigator tmux-gruvbox tmux-yank tmux-thumbs ])

@@ -48,6 +48,18 @@ let
     };
   };
 
+  tmux-continuum = pkgs.tmuxPlugins.mkTmuxPlugin rec {
+    pluginName = "tmux-continuum";
+    rtpFilePath = "continuum.tmux";
+    version = src.rev;
+    src = pkgs.fetchFromGitHub {
+      owner = "tmux-plugins";
+      repo = "tmux-continuum";
+      rev = "3e4bc35da41f956c873aea716c97555bf1afce5d";
+      sha256 = "sha256-Z10DPP5svAL6E8ZETcosmj25RkA1DTBhn3AkJ7TDyN8=";
+    };
+  };
+
   tmux-thumbs-src = pkgs.fetchFromGitHub {
     owner = "fcsonline";
     repo = "tmux-thumbs";
@@ -114,9 +126,10 @@ let
 
 in tmux ([
   sidebar
-  vim-tmux-navigator
+  tmux-continuum
   tmux-gruvbox
-  tmux-yank
-  tmux-thumbs
   tmux-resurrect
+  tmux-thumbs
+  tmux-yank
+  vim-tmux-navigator
 ])

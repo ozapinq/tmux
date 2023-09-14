@@ -74,6 +74,18 @@ let
     '';
   };
 
+  tmux-resurrect = pkgs.tmuxPlugins.mkTmuxPlugin rec {
+    pluginName = "tmux-resurrect";
+    rtpFilePath = "resurrect.tmux";
+    version = src.rev;
+    src = pkgs.fetchFromGitHub {
+      owner = "tmux-plugins";
+      repo = "tmux-resurrect";
+      rev = "cff343cf9e81983d3da0c8562b01616f12e8d548";
+      sha256 = "sha256-FcSjYyWjXM1B+WmiK2bqUNJYtH7sJBUsY2IjSur5TjY=";
+    };
+  };
+
   tmux = (plugins:
     pkgs.stdenv.mkDerivation rec {
 
@@ -100,4 +112,11 @@ let
       '';
     });
 
-in tmux ([ sidebar vim-tmux-navigator tmux-gruvbox tmux-yank tmux-thumbs ])
+in tmux ([
+  sidebar
+  vim-tmux-navigator
+  tmux-gruvbox
+  tmux-yank
+  tmux-thumbs
+  tmux-resurrect
+])

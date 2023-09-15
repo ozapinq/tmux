@@ -98,6 +98,18 @@ let
     };
   };
 
+  tmux-fzf = pkgs.tmuxPlugins.mkTmuxPlugin rec {
+    pluginName = "tmux-fzf";
+    rtpFilePath = "main.tmux";
+    version = src.rev;
+    src = pkgs.fetchFromGitHub {
+      owner = "sainnhe";
+      repo = "tmux-fzf";
+      rev = "2397bd699e9eca8cb62e67c9f79257e9bc4d7556";
+      sha256 = "sha256-Alq5trR+WF4ZfQSzm30abHp94CU3Wim0DPzEzESxRa4=";
+    };
+  };
+
   tmux = (plugins:
     pkgs.stdenv.mkDerivation rec {
 
@@ -131,4 +143,5 @@ in tmux ([
   tmux-resurrect
   tmux-yank
   vim-tmux-navigator
+  tmux-fzf
 ])

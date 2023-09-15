@@ -129,7 +129,6 @@ in tmux ([
   tmux-continuum
   tmux-gruvbox
   tmux-resurrect
-  tmux-thumbs
   tmux-yank
   vim-tmux-navigator
 ])
